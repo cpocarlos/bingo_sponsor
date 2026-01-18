@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Bingo Callobre 2026</title>
+    <style>
+        :root {
+            --gold: #ffcc00;
+            --gold-dark: #b8860b;
+            --bg: #0f172a;
+            --card-bg: #1e293b;
+            --text-dim: #475569;
+        }
+        * { box-sizing: border-box; }
+        
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: white;
+            font-family: 'Arial Black', sans-serif;
+            display: flex;
+            flex-direction: column; /* Cambiado para permitir el footer abajo */
+            padding: 15px;
+        }
+
+        /* Contenedor principal que envuelve los 3 paneles */
+        .app-container {
+            display: flex;
+            flex-grow: 1;
+            min-height: 0;
+        }
+
+        /* Panel Izquierdo */
+        .sidebar-left {
+            width: 260px;
+            display: flex;
+            flex-direction: column;
+            padding: 20px 15px;
+            background: linear-gradient(180deg, #000 0%, #1e293b 100%);
+            border-radius: 20px;
+            border: 2px solid #334155;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .branding h1 {
+            color: var(--gold);
+            font-size: 2.1rem;
+            line-height: 1.1;
+            margin: 0;
+            text-shadow: 3px 3px 0px #000;
+            text-align: center;
+        }
+
+        .sponsors-section {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            overflow: hidden;
+            padding: 20px 0;
+        }
+
+        .sponsors-label {
+            color: var(--gold);
+            font-size: 0.85rem;
+            margin-bottom: 12px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        .carousel-container {
+            width: 100%;
+            height: 200px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border: 1px solid #334155;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.5);
+        }
+
+        .carousel-container img {
+            max-width: 85%;
+            max-height: 85%;
+            object-fit: contain;
+            transition: opacity 0.8s ease-in-out;
+            opacity: 1;
+        }
+
+        .sidebar-footer {
+            flex-shrink: 0;
+            text-align: center;
+            border-top: 1px solid #334155;
+            padding-top: 15px;
+        }
+
+        /* Centro y Derecha */
+        .main-content { flex-grow: 1; display: flex; flex-direction: column; gap: 15px; min-width: 0; }
+        .prize-banner { background: #000; border: 2px solid var(--gold); border-radius: 15px; padding: 10px 20px; display: flex; align-items: center; justify-content: center; gap: 25px; flex-shrink: 0; }
+        .prize-banner select { background: transparent; color: white; border: none; font-family: 'Arial Black'; font-size: 1.8rem; cursor: pointer; outline: none; }
+        .board-container { flex-grow: 1; background: var(--card-bg); border-radius: 20px; padding: 15px; box-shadow: inset 0 0 30px rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; min-height: 0; }
+        .grid { display: grid; grid-template-columns: repeat(10, 1fr); grid-template-rows: repeat(9, 1fr); gap: 8px; width: 100%; height: 100%; }
+        .cell { border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: min(2.2vw, 3.2vh); color: rgba(255,255,255,0.3); cursor: pointer; transition: all 0.1s ease; border: 1px solid rgba(0,0,0,0.2); }
+        
+        /* Colores por filas */
+        .row-0 { background: radial-gradient(circle at 35% 35%, #2d3748, #1a202c); }
+        .row-1 { background: radial-gradient(circle at 35% 35%, #312e81, #1e1b4b); }
+        .row-2 { background: radial-gradient(circle at 35% 35%, #064e3b, #022c22); }
+        .row-3 { background: radial-gradient(circle at 35% 35%, #78350f, #451a03); }
+        .row-4 { background: radial-gradient(circle at 35% 35%, #701a75, #4a044e); }
+        .row-5 { background: radial-gradient(circle at 35% 35%, #1e3a8a, #172554); }
+        .row-6 { background: radial-gradient(circle at 35% 35%, #3f3f46, #18181b); }
+        .row-7 { background: radial-gradient(circle at 35% 35%, #134e4a, #115e59); }
+        .row-8 { background: radial-gradient(circle at 35% 35%, #4c1d95, #2e1065); }
+        
+        .cell.active { background: radial-gradient(circle at 35% 35%, #ffffff 0%, var(--gold) 45%, var(--gold-dark) 100%) !important; color: #000; box-shadow: 0 0 15px var(--gold); border: none; transform: scale(1.06); z-index: 5; }
+        
+        .sidebar-right { width: 260px; display: flex; flex-direction: column; gap: 15px; margin-left: 15px; flex-shrink: 0; }
+        .current-box { background: #000; border: 4px solid var(--gold); border-radius: 50%; width: 190px; height: 190px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .current-ball { font-size: 5rem; color: white; line-height: 1; }
+        .history-box { background: rgba(0,0,0,0.4); border-radius: 20px; padding: 15px; flex-grow: 1; border: 1px solid #334155; overflow: hidden; }
+        .hist-item { font-size: 1.5rem; margin: 8px 0; padding: 8px; background: rgba(255,255,255,0.1); border-radius: 30px; text-align: center; }
+        
+        button { background: #7f1d1d; color: white; border: none; padding: 15px; border-radius: 12px; cursor: pointer; width: 100%; font-weight: bold; font-size: 1rem; }
+
+        /* FOOTER DISEÑO */
+        .designer-footer {
+            text-align: right;
+            font-size: 0.65rem;
+            color: var(--text-dim);
+            padding-top: 10px;
+            font-family: sans-serif;
+            letter-spacing: 1px;
+            opacity: 0.6;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <div class="sidebar-left">
+            <div class="branding">
+                <h1>BINGO<br>CALLOBRE<br>2026</h1>
+            </div>
+
+            <div class="sponsors-section">
+                <div class="sponsors-label">Agradecimientos a:</div>
+                <div class="carousel-container">
+                    <img id="sponsorImg" src="" alt="Sponsor">
+                </div>
+            </div>
+
+            <div class="sidebar-footer">
+                <div style="font-size: 0.9rem; color: var(--gold); letter-spacing: 1.5px; margin-bottom: 5px;">BOLAS SACADAS</div>
+                <div id="count" style="font-size: 3.5rem; margin-bottom: 10px;">0</div>
+                <button onclick="resetGame()">REINICIAR</button>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="prize-banner">
+                <label>MODO DE JUEGO:</label>
+                <select id="prizeSelector">
+                    <option value="LÍNEA">LÍNEA</option>
+                    <option value="2 LÍNEAS">2 LÍNEAS</option>
+                    <option value="BINGO">¡¡¡ BINGO !!!</option>
+                </select>
+            </div>
+            <div class="board-container">
+                <div class="grid" id="grid"></div>
+            </div>
+        </div>
+
+        <div class="sidebar-right">
+            <div class="current-box">
+                <div style="color: var(--gold); font-size: 0.8rem; font-weight: bold;">ÚLTIMA</div>
+                <div class="current-ball" id="currentDisplay">--</div>
+            </div>
+            <div class="history-box">
+                <div style="color: var(--gold); text-align: center; font-size: 0.9rem; margin-bottom: 10px;">HISTORIAL</div>
+                <div id="historyList"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="designer-footer">
+        Diseñador por Carlos Pena
+    </div>
+
+    <script>
+        // Lógica de Sponsors
+        const sponsorImages = [
+            'sponsors/1.jpg',
+            'sponsors/2.jpg',
+            'sponsors/3.jpg',
+			'sponsors/4.jpg'
+        ];
+        
+        let currentSponsorIndex = 0;
+        const sponsorImgElement = document.getElementById('sponsorImg');
+
+        function changeSponsor() {
+            if (sponsorImages.length === 0) return;
+            sponsorImgElement.style.opacity = 0;
+            setTimeout(() => {
+                sponsorImgElement.src = sponsorImages[currentSponsorIndex];
+                sponsorImgElement.style.opacity = 1;
+                currentSponsorIndex = (currentSponsorIndex + 1) % sponsorImages.length;
+            }, 800);
+        }
+
+        if (sponsorImages.length > 0) {
+            sponsorImgElement.src = sponsorImages[0];
+            setInterval(changeSponsor, 5000);
+        }
+
+        // Lógica del Bingo
+        const grid = document.getElementById('grid');
+        const countDisplay = document.getElementById('count');
+        const currentDisplay = document.getElementById('currentDisplay');
+        const historyList = document.getElementById('historyList');
+        let activeBalls = [];
+
+        for (let i = 1; i <= 90; i++) {
+            const div = document.createElement('div');
+            const rowIdx = Math.floor((i-1) / 10);
+            div.className = `cell row-${rowIdx}`;
+            div.innerText = i;
+            div.onclick = () => toggleBall(i, div);
+            grid.appendChild(div);
+        }
+
+        function toggleBall(num, element) {
+            if (element.classList.toggle('active')) {
+                activeBalls.unshift(num);
+                currentDisplay.innerText = num;
+            } else {
+                activeBalls = activeBalls.filter(b => b !== num);
+                currentDisplay.innerText = activeBalls.length > 0 ? activeBalls[0] : "--";
+            }
+            updateUI();
+        }
+
+        function updateUI() {
+            countDisplay.innerText = activeBalls.length;
+            historyList.innerHTML = "";
+            activeBalls.slice(1, 6).forEach(num => {
+                const item = document.createElement('div');
+                item.className = 'hist-item';
+                item.innerText = num;
+                historyList.appendChild(item);
+            });
+        }
+
+        function resetGame() {
+            if(confirm("¿Seguro que quieres reiniciar el Bingo Callobre 2026?")) {
+                document.querySelectorAll('.cell').forEach(c => c.classList.remove('active'));
+                activeBalls = [];
+                currentDisplay.innerText = "--";
+                updateUI();
+            }
+        }
+    </script>
+</body>
+</html>
